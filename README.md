@@ -5,10 +5,10 @@
 
 
 ## Introduction:
-	I love National Parks, and I wanted to see if there was any real difference in popularity between two of the most famous parks. The best way to measure this would be to model the number of visitors. Is there a difference in the mean number of visitors for Zions (Utah) and Yosemite (California) National Parks. 
+I love National Parks, and I wanted to see if there was any real difference in popularity between two of the most famous parks. The best way to measure this would be to model the number of visitors. Is there a difference in the mean number of visitors for Zions (Utah) and Yosemite (California) National Parks. 
 
 ## Methods:
-	The data was obtained directly from the United States National Park Service, as they make all of their visitor data publicly available on their website. Their data was downloaded in a CSV format, and cleaned within R (To download the data, please visit https://irma.nps.gov/STATS/, find the park of interest, and select Recreation Visits By Month (1979 - Current Calendar Year) ). Given that the data is a visitor count by month I am using a Poisson Distribution to model the likelihood. A Poisson Distribution is assumed to be valid if a few assumptions are met.
+The data was obtained directly from the United States National Park Service, as they make all of their visitor data publicly available on their website. Their data was downloaded in a CSV format, and cleaned within R (To download the data, please visit https://irma.nps.gov/STATS/, find the park of interest, and select Recreation Visits By Month (1979 - Current Calendar Year) ). Given that the data is a visitor count by month I am using a Poisson Distribution to model the likelihood. A Poisson Distribution is assumed to be valid if a few assumptions are met.
 The number of occurrences  must be any non-negative integer. K is modeling the number of visitors to each of these parks. The number of visitors is an integer, and cannot be negative.
 Occurrences must be independent. Since people often visit parks in groups, this assumption may be violated, as one person entering the park may lead to a temporary increase in the probability of a visitor entering directly after them. Overall, I think this assumption is still met.
 The rate of occurrence must remain constant. This assumption is violated as there is seasonality within the data. There are more visitors during the summer months for each of these parks than there are during the winter months. 
