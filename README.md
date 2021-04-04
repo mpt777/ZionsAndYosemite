@@ -21,19 +21,24 @@ The log mean number of visitors for Zions in 2019 is 12.66425 per month (~ 37402
 
 ### Priors and Posteriors:
 
-The 2019 data for Zions pushed the prior distribution farther to the right. This signifies that there were more visitors to the park than we priorly predicted. The 95% confidence interval for the posterior had the bounds [10.08259 12.90994] (~ [203828.0 204205.5]). There is a 95% probability that the true (unknown) estimate for the mean log visitors for Zions lies within the given interval, given the evidence provided by the observed data
+The 2019 data for Zions pushed the prior distribution farther to the right. This signifies that there were more visitors to the park than we priorly predicted. The 95% confidence interval for the posterior had the bounds [10.08259 12.90994] (~ [203828.0 204205.5]). There is a 95% probability that the true (unknown) estimate for the mean log visitors for Zions lies within the given interval, given the evidence provided by the observed data.
+
 ![zions](https://user-images.githubusercontent.com/70606376/113515534-501e5280-9532-11eb-87c0-b6459d644a66.png)
 
-The 2019 data for Yosemite also pushed the prior distribution farther to the right, just like the Zions data. The 95% confidence interval for the posterior had the bounds [10.06065, 12.88511] (~ [200856.4, 201231.1]). There is a 95% probability that the true (unknown) estimate for the mean log visitors for Yosemite lies within the given interval, given the evidence provided by the observed data
+The 2019 data for Yosemite also pushed the prior distribution farther to the right, just like the Zions data. The 95% confidence interval for the posterior had the bounds [10.06065, 12.88511] (~ [200856.4, 201231.1]). There is a 95% probability that the true (unknown) estimate for the mean log visitors for Yosemite lies within the given interval, given the evidence provided by the observed data.
+
 ![yosemite](https://user-images.githubusercontent.com/70606376/113515535-50b6e900-9532-11eb-8bd5-2dfe03358134.png)
 
 When the posteriors are plotted together, there is almost a perfect overlap between the two parks. Zions and Yosemite almost have the same number of visitors each year, and the log scale shrinks the”visible” difference in visitors to almost nothing.
+
 ![together](https://user-images.githubusercontent.com/70606376/113515533-501e5280-9532-11eb-9a5b-69d8ee61ab15.png)
 
 ### Monte Carlo Approximations:
 
 Given that the domain of an exponential function is all positive numbers having, it was necessary to transform the data back to their original scale (Everything from this point on will NOT be on the log scale, and instead on the linear scale). I assumed Zions to be the more popular park, so the distribution for the difference in visitors between these two parks is a monte carlo approximation of Zions - Yosemite. The mean difference was 2973.207 visitors, and the 95% confidence interval of this distribution had the bounds [2708.315 3238.829]. Since the confidence interval does not include 0, we can conclude that there is any difference in the mean number of visitors between Zions and Yosemite, with Zions having ever so slightly more visitors!
+
 ![difference](https://user-images.githubusercontent.com/70606376/113515532-501e5280-9532-11eb-9134-23ec2e4ac4b1.png)
+
 ## Conclusion:
 
 Even though Yosemite and Zions are as different as any two parks could be, parks both receive a very similar distribution of visitors. When looking at the 2019 data, we can conclude that Zions was the slightly more popular park, as it had a mean difference in visitors of 2973.207 using the monte carlo methods. 
