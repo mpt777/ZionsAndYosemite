@@ -1,0 +1,286 @@
+---
+title: "Final 251"
+author: "Marshal Taylor"
+date: "3/27/2021"
+output: html_document
+---
+
+### Data Preperation
+```{r}
+library(reshape2)
+```
+
+```{r}
+zions <- read.csv('zions.csv', header=FALSE, stringsAsFactors=FALSE)
+yosemite <- read.csv('yosemite.csv', header=FALSE, stringsAsFactors=FALSE)
+bryce_canyon <- read.csv('bryce_canyon.csv', header=FALSE, stringsAsFactors=FALSE)
+```
+
+```{r}
+zions <- zions[-1:-2,]
+yosemite <- yosemite[-1:-2,]
+bryce_canyon <- bryce_canyon[-1:-2,]
+```
+
+```{r}
+Clean <- function(ttt) {
+  as.numeric(gsub(',','',as.character(ttt)))
+}
+
+new_zions <- sapply(zions, Clean)
+new_yosemite <- sapply(yosemite, Clean)
+new_bryce_canyon <- sapply(bryce_canyon, Clean)
+```
+```{r}
+Prepare <- function(UserDF, LONG){
+  names <- c('Year','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec')
+  
+  UserDF <- UserDF[-1:-2,-14]
+  colnames(UserDF) <- names
+  rownames(UserDF) <- UserDF[,1]
+  
+  if(LONG == TRUE) {
+    UserDF <- UserDF[,-1]
+    UserDF<-(melt(UserDF))
+    UserDF <- UserDF[order(as.numeric(UserDF[,1]), decreasing = TRUE),]
+    
+    names2 <- c('Year','Month','Visitors')
+    colnames(UserDF) <- names2
+    
+    return(UserDF)
+    
+  } else {
+    return(UserDF)
+  }
+}
+```
+
+```{r}
+Year_Selector <- function(UserDF, YEAR) {
+  return_df <- data.frame()
+  for(i in 1:length(YEAR)) {
+    return_df <- rbind(UserDF[UserDF[,'Year']==YEAR[i],], return_df)
+  }
+  return(return_df)
+}
+```
+
+### End Data Cleaning
+
+## Zions
+```{r}
+zions_Final <- Prepare(new_zions, TRUE)
+zions_Data <- Year_Selector(zions_Final, c(2019))
+zions_Data <- log(zions_Data['Visitors'])
+```
+
+```{r}
+mean(zions_Data[,1])
+sd(zions_Data[,1])
+
+mean(exp(zions_Data[,1]))
+sd(exp(zions_Data[,1]))
+```
+
+
+```{r}
+x<- seq(0,20,1)
+plot(x,dpois(x, 8),
+     type='l',
+     main='Poisson Distributions for Log Number of Visitors to Zions in 2019',
+     ylab='Probability Density',
+     xlab ='Log Visitors',
+     col="black",
+     lwd=1)
+```
+
+
+```{r}
+a_x <- 100
+b_x <- 10
+
+x<- seq(6,14,0.01)
+
+plot(x,dgamma(x, shape = a_x + sum(zions_Data), rate = b_x + nrow(zions_Data)),
+     type='l',
+     main='Gamma Distributions for Log Number of Visitors to Zions in 2019',
+     ylab='Probability Density',
+     xlab ='Log Visitors',
+     col="black",
+     lwd=1) +
+lines(x,dgamma(x, shape = a_x, rate = b_x),
+     type='l',
+     lwd=1,
+     col="red") +
+abline( v= qgamma(c(0.025, 0.975), shape = a_x + sum(yosemite_Data), rate = b_x + nrow(yosemite_Data)), lty = 3)
+legend("topleft", legend=c( "prior", "posterior", 'posterior 95% credible'), col=c("red", "black", "black"), lty=c(1,1,3), cex=0.8)
+```
+
+
+```{r}
+qgamma(c(0.025, 0.975), shape = a_x + sum(zions_Data), rate = b_x + nrow(zions_Data))
+
+qgamma(c(0.025, 0.975), shape = a_x + sum(exp(zions_Data)), rate = b_x + nrow(zions_Data))
+```
+
+
+
+## Yosemite
+```{r}
+#2019,2018,2017,2016,2015,2014,2013,2012,2011,2010
+
+yosemite_Final <- Prepare(new_yosemite, TRUE)
+yosemite_Data <- Year_Selector(yosemite_Final, c(2019))
+yosemite_Data <- log(yosemite_Data['Visitors'])
+```
+
+```{r}
+mean(yosemite_Data[,1])
+sd(yosemite_Data[,1])
+
+mean(exp(yosemite_Data[,1]))
+sd(exp(yosemite_Data[,1]))
+```
+
+
+```{r}
+a_x <- 100
+b_x <- 10
+
+x<- seq(6,14,0.01)
+
+plot(x,dgamma(x, shape = a_x + sum(yosemite_Data), rate = b_x + nrow(yosemite_Data)),
+     type='l',
+     main='Gamma Distributions for Log Number of Visitors to Yosemite in 2019',
+     ylab='Probability',
+     xlab ='Log Visitors',
+     col="black",
+     lwd=1) +
+lines(x,dgamma(x, shape = a_x, rate = b_x),
+     type='l',
+     lwd=1,
+     col="red") + 
+abline( v= qgamma(c(0.025, 0.975), shape = a_x + sum(yosemite_Data), rate = b_x + nrow(yosemite_Data)), lty = 3)
+legend("topleft", legend=c( "prior", "posterior", 'posterior 95% credible'), col=c("red", "black", "black"), lty=c(1,1,3), cex=0.8)
+```
+```{r}
+qgamma(c(0.025, 0.975), shape = a_x + sum(yosemite_Data), rate = b_x + nrow(yosemite_Data))
+
+qgamma(c(0.025, 0.975), shape = a_x + sum(exp(yosemite_Data)), rate = b_x + nrow(yosemite_Data))
+```
+
+### Comparison
+```{r}
+a_x <- 100
+b_x <- 10
+
+x<- seq(6,14,0.01)
+
+plot(x,dgamma(x, shape = a_x + sum(zions_Data), rate = b_x + nrow(zions_Data)),
+     type='l',
+     main='Posterior Distributions for Log Number of Visitors in 2019',
+     ylab='Probability',
+     xlab ='Log Visitors',
+     col="red",
+     lwd=1) +
+lines(x,dgamma(x, shape = a_x + sum(yosemite_Data), rate = b_x + nrow(yosemite_Data)),
+     type='l',
+     lwd=1,
+     col="black")
+legend("topright", legend=c( "Zions", "Yosemite" ), col=c("red", "black"), lty=1:1, cex=0.8)
+```
+
+
+```{r}
+# prior parmaeters for theta_x
+a_x <- 100
+b_x <- 10
+
+# draws from the posterior of theta_x
+zions_draws <- rgamma(100000, shape = a_x + sum(exp(zions_Data)), rate = b_x + nrow(zions_Data))
+yosemite_draws <- rgamma(100000, shape = a_x + sum(exp(yosemite_Data)), rate = b_x + nrow(yosemite_Data))
+```
+
+
+```{r}
+difference_draws <- (zions_draws- yosemite_draws )
+mean(difference_draws)
+
+mean(difference_draws > 0)
+
+quantile(difference_draws, c(0.025, 0.975))
+```
+
+```{r}
+plot(density(difference_draws),
+     xlab =  'Difference in Visitors',
+     main = 'Gamma of the Difference between Zions and Yosemite in 2019')+
+abline( v= quantile(difference_draws, c(0.025, 0.975)), lty = 3) 
+legend("topleft", legend=c("posterior difference", '95% credible interval'), col=c("black", "black"), lty=c(1,3), cex=0.8)
+```
+
+```{r}
+ratio_draws <- (zions_draws/yosemite_draws)
+mean(ratio_draws)
+
+quantile(ratio_draws, c(0.025, 0.975))
+```
+
+
+### More Years
+
+```{r}
+zions_Final <- Prepare(new_zions, TRUE)
+zions_Data <- Year_Selector(zions_Final, c(2019,2018,2017,2016,2015,2014,2013,2012,2011,2010))
+zions_Data <- zions_Data['Visitors']
+
+yosemite_Final <- Prepare(new_yosemite, TRUE)
+yosemite_Data <- Year_Selector(yosemite_Final, c(2019,2018,2017,2016,2015,2014,2013,2012,2011,2010))
+yosemite_Data <- yosemite_Data['Visitors']
+```
+
+```{r}
+# prior parmaeters for theta_x
+
+
+a_x <- 100
+b_x <- 10
+
+# draws from the posterior of theta_x
+zions_draws <- rgamma(100000, shape = a_x + sum(zions_Data), rate = b_x + nrow(zions_Data))
+yosemite_draws <- rgamma(100000, shape = a_x + sum(yosemite_Data), rate = b_x + nrow(yosemite_Data))
+```
+
+
+```{r}
+difference_draws <- (yosemite_draws- zions_draws )
+mean(difference_draws)
+
+mean(difference_draws > 0)
+
+quantile(difference_draws, c(0.025, 0.975))
+```
+
+```{r}
+plot(density(difference_draws),
+     xlab =  'Difference in Visitors',
+     main = 'Gamma of the Difference between Yosemite and Zions for 2010:2019')+
+abline( v= quantile(difference_draws, c(0.025, 0.975)), lty = 3) 
+legend("topleft", legend=c("posterior difference", '95% credible interval'), col=c("black", "black"), lty=c(1,3), cex=0.8)
+```
+
+```{r}
+ratio_draws <- (yosemite_draws/zions_draws)
+mean(ratio_draws)
+
+quantile(ratio_draws, c(0.025, 0.975))
+```
+
+
+
+
+
+
+
+
+
