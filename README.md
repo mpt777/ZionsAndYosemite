@@ -1,5 +1,3 @@
-# Zions And Yosemite
-
 # Battle of the Parks
 #### Marshal Taylor
 
