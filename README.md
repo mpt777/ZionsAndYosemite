@@ -48,6 +48,7 @@ Although the Poisson-Gamma modelled the data well, there still was no element of
 Naturally, I was curious to see what would happen if more data was included in the analysis. I quickly added the last 10 years of visitor data to the posterior distributions (2020 was omitted due to covid) to see the effect it would have in our analysis. When years 2010-2019 were added to the analysis, Yosemite was the more popular park (in terms of visitors). This suggests that Zions has become more popular over the years relative to Yosemite, leaving Yosemite more popular when the last 10 years are accounted for, but less popular when the analysis only includes 2019 (Zions is more popular when the starting years for the analysis are 2016:2019, and Yosemite is more popular when the starting year is 2010:2015).
 
 The distribution for the difference in visitors between these two parks is a monte carlo approximation of Yosemite - Zions. The mean difference was 42377.19 visitors, and the 95% confidence interval of this distribution had the bounds [42245.31, 42510.34]. Again, the interval does not contain 0, so we conclude that Yosemite has more visitors per month.
+
 ![difference2](https://user-images.githubusercontent.com/70606376/113515531-501e5280-9532-11eb-9525-9361bfe26059.png)
 
 To better understand the rise in popularity for Zions National Park, a moving average regression model can be used. This will allow the model to better fit the trend of popularity that we’ve been seeing in the data. More analysis will need to be done.
