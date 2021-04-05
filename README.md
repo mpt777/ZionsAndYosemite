@@ -52,3 +52,5 @@ The distribution for the difference in visitors between these two parks is a mon
 ![difference2](https://user-images.githubusercontent.com/70606376/113515531-501e5280-9532-11eb-9525-9361bfe26059.png)
 
 To better understand the rise in popularity for Zions National Park, a moving average regression model can be used. This will allow the model to better fit the trend of popularity that we’ve been seeing in the data. More analysis will need to be done.
+
+Please visit Parks.Rmd for the code!
